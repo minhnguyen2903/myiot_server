@@ -1,0 +1,23 @@
+{
+  "name": "myiot_server",
+  "version": "1.0.0",
+  "description": "first",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chart.js": "^3.6.0",
+    "chartjs": "^0.3.24",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.14",
+    "request-ip": "^2.1.3",
+    "socket.io": "^4.3.2",
+    "socket.io-client": "^4.3.2"
+  },
+  "scripts": {
+    "server": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
