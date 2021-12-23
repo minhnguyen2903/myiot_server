@@ -189,16 +189,15 @@
       const parseArr = JSON.parse(arr);
       parseArr.forEach((element, index) => {
       const date = `${(new Date(element.createdAt).toLocaleDateString()).replace("/2021", "")} - ${new Date(element.createdAt).toLocaleTimeString()}`;
-      labels.push(date);
+        if(index >= parseArr.length - 50) {
+          labels.push(date);
       data.push(Math.floor((element.value / 4095) * 100));
+        }
       });
       document.querySelector('.chart-container').innerHTML = '';
       document.querySelector('.chart-container').innerHTML = '<div class="hjk h-100"><canvas id="myChart"></canvas></div>';
       renderChart(labels, data);
-      if(parseArr.length > 50) {
-        document.querySelector(".hjk").style.width = parseArr.length * 40 + "px";
-      }
-    })
+    });
   </script>
   <script>
     const renderChart = (labels, data) => {
@@ -263,12 +262,16 @@
       document.querySelector(".gas-sensor").innerHTML = Math.floor((json.value / 4095) * 100) + "%";
       document.querySelector('.percent-status').style.background = getColor(json.value / 4095);
       const lastUpdate = Math.floor((Date.now() - json.createdAt) / 1000);
-      if (lastUpdate > 60) {
+      if (lastUpdate > 3600) {
+        document.querySelector(".last-update").innerHTML = Math.floor((lastUpdate / 60)/60) +
+          "<span class='fw-normal' style='font-size: 0.5em'> Hours ago</span>";
+      } 
+      else if (lastUpdate > 60) {
         document.querySelector(".last-update").innerHTML = Math.floor(lastUpdate / 60) +
-          "<span class='fw-normal' style='font-size: 0.5em'> minutes ago</span>";
+          "<span class='fw-normal' style='font-size: 0.5em'> Minutes ago</span>";
       } else {
         document.querySelector(".last-update").innerHTML = Math.floor(lastUpdate) +
-          "<span class='fw-normal' style='font-size: 0.5em'> seconds ago</span>";
+          "<span class='fw-normal' style='font-size: 0.5em'> Seconds ago</span>";
       }
       //     document.querySelector(".last-update").innerHTML = lastUpdate;
     }).catch(err => {
