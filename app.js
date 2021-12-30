@@ -26,6 +26,7 @@ const data = {"data":[{"id":0,"value":0,"createdAt":1638512032689},{"id":1,"valu
 const apiKey = "dsEsxde2341"
 
 const user = {
+  islogin: false,
   username: 'minh',
   password: 'minh1234'
 }
@@ -52,7 +53,14 @@ io.on("connection", (socket) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(`${__dirname}/index.html`);
+  if(user.islogin) {
+    res.sendFile(`${__dirname}/index.html`);
+  }
+  else {
+    res.redirect("/login");
+
+  }
+  
 });
 
 app.get('/download', (req, res) => {
@@ -117,15 +125,24 @@ app.get('/current', (req, res) => {
   res.json(data.current);
 });
 
+
+app.get('/images', (req, res) => {
+  res.sendFile(`${__dirname}/login/images/bg-1.jpg`);
+})
+
+app.get('/login', (req, res) => {
+  res.sendFile(`${__dirname}/login/login.html`);
+})
+
+
 app.post('/login', (req, res) => {
-  if (!req.body.username || !req.body.password) {
-    res.send("<h1>Page not found</h1>")
-  }
-  if (req.body.username === username && req.body.password === password) {
-    res.send("welcome");
+  if (req.body.username === user.username && req.body.password === user.password) {
+    user.islogin = true;
+    res.sendStatus(200);
   } else {
-    res.send("please check username and password");
+    res.sendStatus(401);
   }
+
 });
 
 app.get('/control', (req, res) => {
