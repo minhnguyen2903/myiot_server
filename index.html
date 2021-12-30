@@ -105,6 +105,7 @@
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    let acessNotification = true
     function notifyMe(strAlert) {
       // Let's check if the browser supports notifications
       if (!("Notification" in window)) {
@@ -121,8 +122,12 @@
       else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(function (permission) {
           // If the user accepts, let's create a notification
-          if (permission === "granted") {
+          if (permission === "granted" && acessNotification) {
             var notification = new Notification(strAlert);
+            acessNotification = false;
+            setTimeout(() => {
+              acessNotification = true;
+            }, 30000);
           }
         });
       }
@@ -210,9 +215,10 @@
             label: 'Gas Sensor',
             data: data,
             backgroundColor: 'blue',
+            pointHitRadius: 20,
             borderColor: 'blue',
             borderWidth: 1,
-            tension: 0.3
+            tension: 0
           }]
         },
         options: {
