@@ -23,12 +23,13 @@ const timeStart = Date.now();
 
 
 const data = {"data":[{"id":0,"value":0,"createdAt":1638512032689},{"id":1,"value":2131,"createdAt":1638712032689}],"current":{"value":2000,"createdAt":1638870500592,"requestCount":1}};
-const apiKey = "dsEsxde2341"
-
+const apiKey = "dsEsxde2341";
+const keyWord = "qwertyuiopasdfghjklzxcvbnm1234567890000";
 const user = {
   islogin: false,
   username: 'minh',
-  password: 'minh1234'
+  password: 'minh1234',
+  apiKey: "dsEsxde2341"
 }
 
 var i = 0;
@@ -64,14 +65,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/download', (req, res) => {
-  var apkFile = `${__dirname}/apk/myapp.apk`
+  var apkFile = `${__dirname}/apk/app-universal-release.apk`
 if(!fs.existsSync(apkFile))
     return res.status(404).send('Sorry no APKs here');
 res.download(apkFile);
 });
 
-app.get('/runtime', (req, res) => {
+app.get('/runtime/:id', (req, res) => {
   res.json({
+    info: req.params.id,
     timeStart: timeStart,
     timeStop: current.createdAt,
     runTime: current.createdAt - timeStart,
@@ -102,7 +104,6 @@ app.get('/api/data', (req, res) => {
       }
       contact.led1 = req.query.led1;
       contact.led2 = req.query.led2;
-   //   fs.writeFileSync("./data.json", JSON.stringify(data));
       console.log(req.query.request, req.query.value, req.query.led1, req.query.led2);
       res.json({
         message: `request ${req.query.request} OK`,
@@ -138,7 +139,8 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   if (req.body.username === user.username && req.body.password === user.password) {
     user.islogin = true;
-    res.sendStatus(200);
+    res.send(user.apiKey);
+    return;
   } else {
     res.sendStatus(401);
   }
@@ -168,7 +170,7 @@ app.get('/control', (req, res) => {
 
 app.get('/random', (req, res) => {
   var clientIp = requestIp.getClientIp(req);
-  console.log("access from: ", clientIp)
+  console.log("access from: ", clientIp);
   res.send(`value: ${Math.floor(Math.random()*100)}\r\n`);
 });
 
