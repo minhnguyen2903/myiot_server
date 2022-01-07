@@ -27,8 +27,8 @@ const apiKey = "dsEsxde2341";
 const keyWord = "qwertyuiopasdfghjklzxcvbnm1234567890000";
 const user = {
   islogin: false,
-  username: 'minh',
-  password: 'minh1234',
+  username: 'admin',
+  password: 'admin',
   apiKey: "dsEsxde2341"
 }
 
@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
 });
 
 app.get('/', (req, res) => {
-  if(user.islogin) {
+if(user.islogin) {
     res.sendFile(`${__dirname}/index.html`);
   }
   else {
