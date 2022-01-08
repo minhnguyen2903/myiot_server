@@ -123,7 +123,7 @@ app.get('/view', (req, res) => {
 
 app.get('/current', (req, res) => {
   console.log('%c User get Data ', 'background: #222; color: #bada55');
-  res.json(data.current, led);
+  res.json({...data.current, ...led});
 });
 
 
